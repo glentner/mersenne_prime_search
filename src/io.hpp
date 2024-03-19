@@ -13,19 +13,19 @@
 
 // Internal libs
 #include "main.hpp"   // APP_VERSION
-#include "mp.hpp"     // MP_Int
+#include "mp.hpp"     // BigInt
 
 #ifndef _MPS_IO_
 #define _MPS_IO_
 
 
-class MP_File {
+class MPS_File {
 public:
 
-	MP_File();
-	MP_File(const std::string& filepath);
+	MPS_File();
+	MPS_File(const std::string& filepath);
 
-	friend std::ostream& operator<<(std::ostream& some_stream, const MP_File& some_file);
+	friend std::ostream& operator<<(std::ostream& some_stream, const MPS_File& some_file);
 };
 
 
