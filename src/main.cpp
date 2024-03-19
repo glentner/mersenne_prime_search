@@ -20,7 +20,7 @@ int main(const int argc, const char **argv) {
         return ERR_USAGE;
     }
 
-	MP_Int num = MP_Int();
+	BigInt num = BigInt();
 	num.load(std::string(argv[1]));
 
 	log::debug(num);

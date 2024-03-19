@@ -13,28 +13,40 @@
 #include "mp.hpp"
 
 
-MP_Int::MP_Int() {}
+BigInt::BigInt() {}
 
-MP_Int::MP_Int(std::vector<uint16_t> const& digits) {
+BigInt::BigInt(std::vector<uint16_t> const& digits) {
 	this -> digits = digits;
 }
 
-// Load digits from existing string into MP_Int
-void MP_Int::load(const std::string& other) {
+void BigInt::load(const std::string& str) {
+	//
+	// Load from existing string
+	//
+	// Clear previous data and load digits from `str`.
+	// Characters and converted to integers.
+
 	digits.clear();
-	digits.reserve(other.size());
-	for (const char& c: other) {
+	digits.reserve(str.size());
+	for (const char& c: str) {
 		digits.push_back(c - '0');
 	}
 }
 
-// The size is just the size of the vector
-size_t MP_Int::size() {
+size_t BigInt::size() {
+	//
+	// Number of digits
+	//
+	// A count of the digits in the number.
+	// This is not the memory size.
+
 	return digits.size();
 }
 
-// Printing MP_Int to stream prints digits
-std::ostream& operator<<(std::ostream& s, const MP_Int& m) {
+std::ostream& operator<<(std::ostream& s, const BigInt& m) {
+	//
+	// Write digits to stream
+
 	for (const uint16_t& n: m.digits) {
 		s << n;
 	}
