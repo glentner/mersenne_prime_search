@@ -52,13 +52,13 @@ namespace log {
 	};
 
 	inline std::string timestamp() {
-		std::time_t t = std::time(nullptr);
-		char mbstr[100];
-		std::strftime(mbstr,
-				      sizeof(mbstr),
+		std::time_t time = std::time(nullptr);
+		char time_chars[100];
+		std::strftime(time_chars,
+				      sizeof(time_chars),
 					  "%Y-%m-%d %H:%M:%S",
-					  std::localtime(&t));
-		return mbstr;
+					  std::localtime(&time));
+		return time_chars;
 	}
 
 	class Logger {
