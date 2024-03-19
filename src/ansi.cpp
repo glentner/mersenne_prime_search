@@ -18,6 +18,9 @@
 
 
 void init_console() {
+	// Check environment variables and I/O context to decide if we should
+	// be printing characters with ansi color sequences or suppress them.
+	//
 	// NOTE: This should be called by main() once at startup.
 
 	if (not isatty(fileno(stdout))) {
@@ -43,12 +46,20 @@ void init_console() {
 
 
 std::string format_ansi(Ansi ansi, const std::string& str) {
-    // Apply escape sequence with reset afterward.
+	// Wrap `str` with given `ansi` escape sequence and RESET (if necessary).
+	//
+	// This method considers NO_COLOR or FORCE_COLOR to implicitly
+	// suppress applying ansi color escape sequences.
+	//
+	// TODO: We need a better way to deal with <stdout> vs <stderr>.
+	//       Right now `log` methods are only used here so we'll assume
+	//       only <stderr> for now.
+
     if (NO_COLOR and not FORCE_COLOR) {
         return str;
 	}
 	if (not STDERR_COLOR) {
-		return str;  // NOTE: we need to know where this goes?
+		return str;
 	}
 	if (str.ends_with(ansi_by_id[RESET])) {
 		return ansi_by_id[ansi] + str;
