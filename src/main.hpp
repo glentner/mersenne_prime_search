@@ -29,7 +29,7 @@ static const char* APP_USAGE = R"USAGE(Usage:
 )USAGE";
 
 
-static const char* APP_HELP = R"USAGE(Usage:
+static const char* APP_HELP = R"HELP(Usage:
   mps [-hv] PVAL [-t NAME] [-f PATH]
   Check if number is Mersenne prime.
 
@@ -41,7 +41,7 @@ Options:
   -f, --file     PATH  File path for check-point.
   -v, --version        Show version and exit.
   -h, --help           Show this message and exit.
-)USAGE";
+)HELP";
 
 
 #endif
