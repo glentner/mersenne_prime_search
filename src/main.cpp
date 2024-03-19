@@ -14,8 +14,8 @@
 
 int main(const int argc, const char **argv) {
 
-	init_console();
-	log::get().set_level(log::DEBUG);
+	log::init();
+	log::set_level("debug");
 
     if (argc == 1) {
         std::cout << APP_USAGE;

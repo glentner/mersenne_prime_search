@@ -17,7 +17,7 @@
 #include "ansi.hpp"
 
 
-void init_console() {
+void init_tty() {
 	// Check environment variables and I/O context to decide if we should
 	// be printing characters with ansi color sequences or suppress them.
 	//

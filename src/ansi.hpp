@@ -19,7 +19,7 @@ static bool STDOUT_COLOR = true;
 static bool STDERR_COLOR = true;
 
 
-void init_console();
+void init_tty();
 
 
 enum Ansi {

@@ -30,17 +30,19 @@ static const char* APP_USAGE = R"USAGE(Usage:
 
 
 static const char* APP_HELP = R"HELP(Usage:
-  mps [-hv] PVAL [-t NAME] [-f PATH]
+  mps [-hv] PVAL [-t TEST] [-f PATH] [-s | -p]
   Check if number is Mersenne prime.
 
 Arguments:
-  NUM                  P-value to check.
+  NUM                     P-value to check.
 
 Options:
-  -t, --test     NAME  Which test to run.
-  -f, --file     PATH  File path for check-point.
-  -v, --version        Show version and exit.
-  -h, --help           Show this message and exit.
+  -p, --ptest             Only test if PVAL is prime.
+  -s, --skip-ptest        Suppress initial test on PVAL.
+  -t, --test        NAME  One of 'tf', 'p1', 'll' (default: 'all').
+  -f, --file        PATH  File path for check-pointing.
+  -v, --version           Show version and exit.
+  -h, --help              Show this message and exit.
 )HELP";
 
 

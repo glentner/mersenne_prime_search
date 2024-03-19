@@ -37,6 +37,21 @@ namespace log {
 		{"detailed",  LOG_DETAILED},
 	};
 
+	static std::string hostname = "";
+	static std::string task_id = "";
+
+	inline void set_hostname() {
+		char h[1024];
+		gethostname(h, 1024);
+		hostname = h;
+	}
+
+	inline void set_task_id() {
+		if (const char* _task_id = std::getenv("TASK_ID")) {
+			task_id = _task_id;
+		}
+	}
+
 	static Style style = LOG_DEFAULT;
 
 	inline void set_style(const std::string& str) {
@@ -55,13 +70,31 @@ namespace log {
 		CRITICAL = 4
 	};
 
+	static Level level = WARNING;
+	static std::map<std::string, Level>
+	level_by_name {
+		{"debug",    DEBUG},
+		{"info",     INFO},
+		{"warning",  WARNING},
+		{"error",    ERROR},
+		{"critical", CRITICAL},
+	};
+
+	inline void set_level(const std::string& str) {
+		if (level_by_name.find(str) != level_by_name.end()) {
+			level = level_by_name[str];
+		} else {
+			throw std::runtime_error("Invalid log::level '" + str + "'");
+		}
+	}
+
 	static std::map<Level, std::string>
 	name_by_level {
-		{DEBUG,    "DEBUG"},
-		{INFO,     "INFO"},
-		{WARNING,  "WARNING"},
-		{ERROR,    "ERROR"},
-		{CRITICAL, "CRITICAL"}
+		{DEBUG,    "debug"},
+		{INFO,     "info"},
+		{WARNING,  "warning"},
+		{ERROR,    "error"},
+		{CRITICAL, "critical"},
 	};
 
 	static std::map<Level, std::function<std::string(std::string)>>
@@ -73,7 +106,14 @@ namespace log {
 		{CRITICAL, magenta}
 	};
 
-	inline std::string timestamp() {
+	// NOTE: Chould be called once by main()
+	inline void init() {
+		init_tty();
+		set_hostname();
+		set_task_id();
+	}
+
+	inline std::string get_timestamp() {
 		std::time_t time = std::time(nullptr);
 		char time_chars[100];
 		std::strftime(time_chars,
@@ -82,34 +122,6 @@ namespace log {
 					  std::localtime(&time));
 		return time_chars;
 	}
-
-	class Logger {
-	public:
-		Level level = WARNING;
-		std::string hostname;
-
-		static Logger& get() {
-			static Logger instance;
-			return instance;
-		}
-
-		void set_level(Level level) {
-			this -> level = level;
-		}
-
-	private:
-		Logger(){
-			char hostname[1024];
-			gethostname(hostname, 1024);
-			this -> hostname = hostname;
-		}
-
-	public:
-		Logger(Logger const&)          = delete;
-		void operator=(Logger const&)  = delete;
-	};
-
-	inline Logger& get() { return Logger::get(); }
 
 	inline void __print(std::ostream& s){
 		s << std::endl;
@@ -137,10 +149,15 @@ namespace log {
 	inline void print_detailed(Level level, Args&&... args) {
 		std::string name = name_by_level[level];
 		name.insert(name.begin(), 8 - name.size(), ' ');
+		std::string task_id_part = "";
+		if (not task_id.empty() ) {
+			task_id_part = "[" + task_id + "] ";
+		}
 		__print(
 			std::cerr,
-			faint(timestamp()), " ",
-			faint(get().hostname), " ",
+			faint(get_timestamp()), " ",
+			faint(hostname), " ",
+			faint(task_id_part),
 			bold(color_by_level[level](name)),
 			faint(" ["), faint(APP_NAME), faint("] "),
 			std::forward<Args>(args)...);
@@ -148,7 +165,7 @@ namespace log {
 
 	template <typename... Args>
 	inline void print(Level level, Args&&... args) {
-		if (get().level > level) {
+		if (::log::level > level) {
 			return;
 		} else {
 			switch (style) {
