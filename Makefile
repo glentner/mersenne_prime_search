@@ -5,7 +5,7 @@ CXX      := clang++
 CXXFLAGS := -Ofast -std=c++20 -I src
 
 EXE      := bin/mps
-MODULES  := ansi log mp
+MODULES  := ansi log mp io
 
 SOURCES  := $(addsuffix .cpp,$(addprefix src/,$(MODULES)))
 OBJECTS  := $(subst src/,lib/,$(SOURCES:.cpp=.o))

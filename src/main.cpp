@@ -25,8 +25,12 @@ int main(const int argc, const char **argv) {
 	std::vector<std::string> args {argv + 1, argv + argc};
 	try {
 		while (true) {
+			break;
 			throw std::invalid_argument(args[0]);
 		}
+
+		log::debug("Called log::set_style(\"detailed\")");
+		log::set_style("detailed");
 
 		BigInt num = BigInt();
 		num.load(std::string(argv[1]));
@@ -41,6 +45,11 @@ int main(const int argc, const char **argv) {
 
 		log::critical("Invalid argument: ", error.what());
 		return ERR_ARG;
+
+	} catch (std::runtime_error const& error) {
+
+		log::critical(error.what());
+		return ERR_RUN;
 
 	} catch (std::exception const& error) {
 

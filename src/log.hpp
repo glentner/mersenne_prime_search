@@ -7,6 +7,7 @@
 // Standard libs
 #include <iostream>
 #include <string>
+#include <set>
 #include <map>
 #include <ctime>       // localtime
 #include <iterator>
@@ -24,6 +25,27 @@
 
 
 namespace log {
+
+	enum Style {
+		LOG_DEFAULT,
+		LOG_DETAILED,
+	};
+
+	static std::map<std::string, Style>
+	style_by_name {
+		{"default",   LOG_DEFAULT},
+		{"detailed",  LOG_DETAILED},
+	};
+
+	static Style style = LOG_DEFAULT;
+
+	inline void set_style(const std::string& str) {
+		if (style_by_name.find(str) != style_by_name.end()) {
+			style = style_by_name[str];
+		} else {
+			throw std::runtime_error("Invalid log::style '" + str + "'");
+		}
+	}
 
 	enum Level : uint8_t {
 		DEBUG = 0,
@@ -101,21 +123,45 @@ namespace log {
 	}
 
 	template <typename... Args>
+	inline void print_default(Level level, Args&&... args) {
+		std::string name = name_by_level[level];
+		name.insert(name.begin(), 8 - name.size(), ' ');
+		__print(
+			std::cerr,
+			bold(color_by_level[level](name)),
+			faint(" ["), faint(APP_NAME), faint("] "),
+			std::forward<Args>(args)...);
+	}
+
+	template <typename... Args>
+	inline void print_detailed(Level level, Args&&... args) {
+		std::string name = name_by_level[level];
+		name.insert(name.begin(), 8 - name.size(), ' ');
+		__print(
+			std::cerr,
+			faint(timestamp()), " ",
+			faint(get().hostname), " ",
+			bold(color_by_level[level](name)),
+			faint(" ["), faint(APP_NAME), faint("] "),
+			std::forward<Args>(args)...);
+	}
+
+	template <typename... Args>
 	inline void print(Level level, Args&&... args) {
 		if (get().level > level) {
 			return;
 		} else {
-			std::string name = name_by_level[level];
-			name.insert(name.begin(), 8 - name.size(), ' ');
-			__print(
-				std::cerr,
-				faint(timestamp()), " ",
-				faint(get().hostname), " ",
-				bold(color_by_level[level](name)),
-				faint(" ["), faint(APP_NAME), faint("] "),
-                std::forward<Args>(args)...);
+			switch (style) {
+				case LOG_DEFAULT:
+					print_default(level, std::forward<Args>(args)...);
+					break;
+				case LOG_DETAILED:
+					print_detailed(level, std::forward<Args>(args)...);
+					break;
+			}
 		}
 	}
+
 
 	template <typename... Args>
 	inline void debug(Args&&... args) {
