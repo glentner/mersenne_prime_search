@@ -4,6 +4,7 @@
 // Standard libs
 #include <iostream>
 #include <string>
+#include <exception>
 
 // Internal libs
 #include "main.hpp"
@@ -14,20 +15,38 @@
 int main(const int argc, const char **argv) {
 
 	init_console();
+	log::get().set_level(log::DEBUG);
 
     if (argc == 1) {
         std::cout << APP_USAGE;
         return ERR_USAGE;
     }
 
-	BigInt num = BigInt();
-	num.load(std::string(argv[1]));
+	std::vector<std::string> args {argv + 1, argv + argc};
+	try {
+		while (true) {
+			throw std::invalid_argument(args[0]);
+		}
 
-	log::debug(num);
-	log::info(num);
-	log::warn(num);
-	log::err(num);
-	log::critical(num);
+		BigInt num = BigInt();
+		num.load(std::string(argv[1]));
+
+		log::debug(num);
+		log::info(num);
+		log::warn(num);
+		log::err(num);
+		log::critical(num);
+
+	} catch (std::invalid_argument const& error) {
+
+		log::critical("Invalid argument: ", error.what());
+		return ERR_ARG;
+
+	} catch (std::exception const& error) {
+
+		log::critical("Uncaught exception: ", error.what());
+		return ERR_UNKNOWN;
+	}
 
     return OK;
 }
