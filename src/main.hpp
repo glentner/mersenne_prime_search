@@ -5,11 +5,16 @@
 //
 
 
+// Standard libs
+#include <string>
+
+
 #ifndef _MPS_MAIN_
 #define _MPS_MAIN_
 
-#define APP_NAME "mps"
-#define APP_VERSION "0.1.0"
+
+static const std::string APP_NAME = "mps";
+static const std::string APP_VERSION = "0.1.0";
 
 
 enum Status {
@@ -23,13 +28,12 @@ enum Status {
 };
 
 
-static const char* APP_USAGE = R"USAGE(Usage:
+static const std::string APP_USAGE = R"USAGE(Usage:
   mps [-hv] PVAL [-t NAME] [-f PATH]
-  Check if number is Mersenne prime.
-)USAGE";
+  Check if number is Mersenne prime.)USAGE";
 
 
-static const char* APP_HELP = R"HELP(Usage:
+static const std::string APP_HELP = R"HELP(Usage:
   mps [-hv] PVAL [-t TEST] [-f PATH] [-s | -p]
   Check if number is Mersenne prime.
 
@@ -42,8 +46,7 @@ Options:
   -t, --test        NAME  One of 'tf', 'p1', 'll' (default: 'all').
   -f, --file        PATH  File path for check-pointing.
   -v, --version           Show version and exit.
-  -h, --help              Show this message and exit.
-)HELP";
+  -h, --help              Show this message and exit.)HELP";
 
 
 #endif
