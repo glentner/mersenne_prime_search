@@ -5,10 +5,12 @@
 #include <iostream>
 #include <string>
 #include <exception>
+#include <regex>
 
 // Internal libs
 #include "main.hpp"
 #include "log.hpp"
+#include "cli.hpp"
 #include "mp.hpp"
 
 
@@ -17,42 +19,28 @@ int main(const int argc, const char **argv) {
 	log::init();
 	log::set_level("debug");
 
-    if (argc == 1) {
-        std::cout << APP_USAGE;
-        return ERR_USAGE;
-    }
-
-	std::vector<std::string> args {argv + 1, argv + argc};
 	try {
-		while (true) {
-			break;
-			throw std::invalid_argument(args[0]);
-		}
-
-		log::debug("Called log::set_style(\"detailed\")");
-		log::set_style("detailed");
+		cli::Interface opt {argc, argv};
+		opt.parse_args();
 
 		BigInt num = BigInt();
-		num.load(std::string(argv[1]));
+		num.load(opt.pval);
 
-		log::debug(num);
-		log::info(num);
-		log::warn(num);
-		log::err(num);
-		log::critical(num);
+		log::info("Starting (", num, ")");
 
-	} catch (std::invalid_argument const& error) {
+	} catch (cli::show_info const& error) {
+		std::cout << error.what() << std::endl;
+		return ERR_USAGE;
 
-		log::critical("Invalid argument: ", error.what());
+	} catch (cli::argument_error const& error) {
+		log::critical(error.what());
 		return ERR_ARG;
 
 	} catch (std::runtime_error const& error) {
-
 		log::critical(error.what());
 		return ERR_RUN;
 
 	} catch (std::exception const& error) {
-
 		log::critical("Uncaught exception: ", error.what());
 		return ERR_UNKNOWN;
 	}
