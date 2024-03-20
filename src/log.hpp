@@ -165,61 +165,52 @@ namespace log {
 
 	template <typename... Args>
 	inline void print(Level level, Args&&... args) {
-		if (::log::level > level) {
+		if (::log::level > level)
 			return;
-		} else {
-			switch (style) {
-				case LOG_DEFAULT:
-					print_default(level, std::forward<Args>(args)...);
-					break;
-				case LOG_DETAILED:
-					print_detailed(level, std::forward<Args>(args)...);
-					break;
-			}
+		switch (style) {
+			case LOG_DEFAULT:
+				print_default(level, std::forward<Args>(args)...);
+				break;
+			case LOG_DETAILED:
+				print_detailed(level, std::forward<Args>(args)...);
+				break;
 		}
 	}
 
 
 	template <typename... Args>
 	inline void debug(Args&&... args) {
-		print(DEBUG,
-			  std::forward<Args>(args)...);
+		print(DEBUG, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	inline void info(Args&&... args) {
-		print(INFO,
-			  std::forward<Args>(args)...);
+		print(INFO, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	inline void warn(Args&&... args) {
-		print(WARNING,
-			  std::forward<Args>(args)...);
+		print(WARNING, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	inline void warning(Args&&... args) {
-		print(WARNING,
-			  std::forward<Args>(args)...);
+		print(WARNING, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	inline void err(Args&&... args) {
-		print(ERROR,
-			  std::forward<Args>(args)...);
+		print(ERROR, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	inline void error(Args&&... args) {
-		print(ERROR,
-			  std::forward<Args>(args)...);
+		print(ERROR, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	inline void critical(Args&&... args) {
-		print(CRITICAL,
-			  std::forward<Args>(args)...);
+		print(CRITICAL, std::forward<Args>(args)...);
 	}
 }
 
