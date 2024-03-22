@@ -62,12 +62,12 @@ namespace cli {
 		bool opt_test_case = false;
 		void set_test_case(const std::string& str);
 
-		std::string file_path;
+		std::string file_path = "NOPATH";
 		bool opt_file_path = false;
 		void set_file_path(const std::string& str);
 
-		bool ptest_only = false;
-		bool ptest_skip = false;
+		bool show_primes = false;
+		bool skip_ptest = false;
 
 		std::vector<std::string> remaining {};
 		std::vector<std::string> positional {};

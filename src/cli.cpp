@@ -91,8 +91,8 @@ namespace cli {
 				throw argument_error("Missing option value for --test");
 			if (opt_test_case)
 				log::warn("Duplicate use of -t/--test");
+			set_test_case(remaining[0]);
 			pop_opt();
-			set_test_case(opt_value);
 
 		} else if (starts_with(opt, "--test=")) {
 			if (opt_test_case)
@@ -105,8 +105,8 @@ namespace cli {
 				throw argument_error("Missing option value for --file");
 			if (opt_file_path)
 				log::warn("Duplicate use of -f/--file");
+			set_test_case(remaining[0]);
 			pop_opt();
-			set_test_case(opt_value);
 
 		} else if (starts_with(opt, "--file=")) {
 			if (opt_file_path)
@@ -115,14 +115,14 @@ namespace cli {
 			set_file_path(opt_value);
 
 		} else if (opt == "--skip-ptest") {
-			if (ptest_skip)
+			if (skip_ptest)
 				log::warn("Duplicate use of -s/--skip-ptest");
-			ptest_skip = true;
+			skip_ptest = true;
 
-		} else if (opt == "--ptest") {
-			if (ptest_only)
-				log::warn("Duplicate use of -p/--ptest");
-			ptest_only = true;
+		} else if (opt == "--primes") {
+			if (show_primes)
+				log::warn("Duplicate use of -p/--primes");
+			show_primes = true;
 
 		} else {
 			throw argument_error("Unrecognized option: " + opt);
@@ -166,14 +166,14 @@ namespace cli {
 			set_file_path(opt_value);
 
 		} else if (opt == "-s") {
-			if (ptest_skip)
+			if (skip_ptest)
 				log::warn("Duplicate use of -s/--skip-ptest");
-			ptest_skip = true;
+			skip_ptest = true;
 
 		} else if (opt == "-p") {
-			if (ptest_only)
-				log::warn("Duplicate use of -p/--ptest");
-			ptest_only = true;
+			if (show_primes)
+				log::warn("Duplicate use of -p/--primes");
+			show_primes = true;
 
 		} else {
 			throw argument_error("Unrecognized option: " + opt);
@@ -198,8 +198,6 @@ namespace cli {
 			throw argument_error("Bad file path: " + file_path);
 		}
 	}
-
-
 }
 
 

@@ -41,7 +41,7 @@ Arguments:
   NUM                     P-value to check.
 
 Options:
-  -p, --ptest             Only test if PVAL is prime.
+  -p, --primes            Print primes up to PVAL.
   -s, --skip-ptest        Suppress initial test on PVAL.
   -t, --test        NAME  One of 'tf', 'p1', 'll' (default: 'all').
   -f, --file        PATH  File path for check-pointing.
