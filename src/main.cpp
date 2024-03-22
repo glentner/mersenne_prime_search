@@ -11,22 +11,27 @@
 #include "main.hpp"
 #include "log.hpp"
 #include "cli.hpp"
+#include "math.hpp"
 #include "mp.hpp"
 
 
 int main(const int argc, const char **argv) {
 
 	log::init();
-	log::set_level("debug");
+	log::set_level("info");
 
 	try {
-		cli::Interface opt {argc, argv};
-		opt.parse_args();
+		auto opt = cli::parse_args(argc, argv);
 
-		BigInt num = BigInt();
+		auto num = BigInt();
 		num.load(opt.pval);
 
-		log::info("Starting (", num, ")");
+		if (opt.show_primes) {
+			display_primes(std::stoi(opt.pval));
+			return OK;
+		}
+
+		log::info("Starting test: ", num);
 
 	} catch (cli::show_info const& error) {
 		std::cout << error.what() << std::endl;
