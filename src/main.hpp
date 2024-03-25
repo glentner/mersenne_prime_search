@@ -18,13 +18,12 @@ static const std::string APP_VERSION = "0.1.0";
 
 
 enum Status {
-	OK            = 0,  // Everything ran as expected
-	ERR_USAGE     = 1,  // Usage or help text printed
-	ERR_ARG       = 2,  // Wrong command-line invocation
-	ERR_CFG       = 3,  // Configuration error
-	ERR_FILE      = 4,  // File I/O or formatting error
-	ERR_RUN       = 5,  // Generic runtime error
-	ERR_UNKNOWN   = 6,  // Unexpected internal failure
+	OK            = 0,   // Everything ran as expected
+	ERR_ARG       = 1,   // Wrong command-line invocation
+	ERR_CFG       = 2,   // Configuration error
+	ERR_FILE      = 10,  // File I/O or formatting error
+	ERR_RUN       = 20,  // Generic runtime error
+	ERR_UNKNOWN   = 30,  // Unexpected internal failure
 };
 
 
