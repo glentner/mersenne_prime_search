@@ -4,13 +4,13 @@
 // String methods
 //
 
+#pragma once
+
+
 // Standard libs
 #include <map>
 #include <string>
 #include <regex>
-
-#ifndef _MPS_STR_
-#define _MPS_STR_
 
 
 static bool NO_COLOR = false;
@@ -70,7 +70,4 @@ std::string blue(const std::string& str);
 std::string magenta(const std::string& str);
 std::string cyan(const std::string& str);
 std::string white(const std::string& str);
-
-
-#endif
 

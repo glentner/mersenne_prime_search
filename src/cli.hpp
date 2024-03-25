@@ -4,6 +4,9 @@
 // Command-line Interface
 //
 
+#pragma once
+
+
 // Standard libs
 #include <iostream>
 #include <string>
@@ -83,3 +86,4 @@ namespace cli {
 
 	Interface parse_args(const int argc, const char** argv);
 }
+

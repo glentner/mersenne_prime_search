@@ -6,6 +6,9 @@
 // This module defines the file format for storing partial results.
 // The .mps file is plain text with key value data.
 
+#pragma once
+
+
 // Standard libs
 #include <iostream>
 #include <string>
@@ -14,9 +17,6 @@
 // Internal libs
 #include "main.hpp"   // APP_VERSION
 #include "mp.hpp"     // BigInt
-
-#ifndef _MPS_IO_
-#define _MPS_IO_
 
 
 class MPS_File {
@@ -43,7 +43,4 @@ I-VALUE
 P-VALUE
     90587203495
 )FORMAT";
-
-
-#endif
 

@@ -4,6 +4,9 @@
 // Command-line Interface
 //
 
+#pragma once
+
+
 // Standard libs
 #include <string>
 #include <exception>

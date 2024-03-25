@@ -4,6 +4,7 @@
 // Command-line Interface
 //
 
+
 // Standard libs
 #include <iostream>
 #include <string>
@@ -15,7 +16,7 @@
 #include "cli.hpp"
 
 
-// Help methods for processing command-line options
+// Helper methods for processing command-line options
 bool starts_with(const std::string& opt, const std::string& match_str);
 std::string strip_left(const std::string opt, const std::string& match_str);
 
