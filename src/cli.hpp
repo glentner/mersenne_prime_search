@@ -20,17 +20,20 @@
 
 namespace cli {
 
+
 	class show_info: public mps_error {
 	public:
 		show_info(const std::string& msg = ""): mps_error(msg) {}
 
 	};
 
+
 	class argument_error: public mps_error {
 	public:
 		argument_error(const std::string& msg = ""): mps_error(msg) {}
 
 	};
+
 
 	enum TestCase {
 		TEST_NONE,
@@ -39,6 +42,7 @@ namespace cli {
 		TEST_P_MINUS_ONE,
 		TEST_LUCAS_LEHMER,
 	};
+
 
 	static std::map<std::string, TestCase>
 	test_by_name {
@@ -52,6 +56,7 @@ namespace cli {
 		{"ll",           TEST_LUCAS_LEHMER},
 		{"lucus-lehmer", TEST_LUCAS_LEHMER},
 	};
+
 
 	class Interface {
 	public:
@@ -71,6 +76,9 @@ namespace cli {
 
 		bool show_primes = false;
 		bool skip_ptest = false;
+
+		bool debug_mode = false;
+		bool detailed_mode = false;
 
 		std::vector<std::string> remaining {};
 		std::vector<std::string> positional {};

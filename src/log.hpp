@@ -134,6 +134,8 @@ namespace log {
 		init_tty();
 		set_hostname();
 		set_task_id();
+		set_level("info");
+		set_style("default");
 	}
 
 

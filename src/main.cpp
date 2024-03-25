@@ -18,10 +18,17 @@
 int main(const int argc, const char **argv) {
 
 	log::init();
-	log::set_level("info");
 
 	try {
 		auto opt = cli::parse_args(argc, argv);
+
+		if (opt.debug_mode) {
+			log::set_level("debug");
+		}
+
+		if (opt.detailed_mode) {
+			log::set_style("detailed");
+		}
 
 		auto num = BigInt();
 		num.load(opt.pval);

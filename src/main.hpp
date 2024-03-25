@@ -28,12 +28,12 @@ enum Status {
 
 
 static const std::string APP_USAGE = R"USAGE(Usage:
-  mps [-hv] [-p] PVAL [-s] [-t NAME] [-f PATH]
+  mps [-hv] [-p] PVAL [-s] [-t NAME] [-f PATH] [-d] [-D]
   Check if number is Mersenne prime.)USAGE";
 
 
 static const std::string APP_HELP = R"HELP(Usage:
-  mps [-hv] [-p] PVAL [-s] [-t NAME] [-f PATH]
+  mps [-hv] [-p] PVAL [-s] [-t NAME] [-f PATH] [-d] [-D]
   Check if number is Mersenne prime.
 
 Arguments:
@@ -44,6 +44,8 @@ Options:
   -s, --skip-ptest        Suppress initial prime test on PVAL.
   -t, --test        NAME  One of 'tf', 'p1', 'll' (default: 'all').
   -f, --file        PATH  File path for check-pointing.
+  -d, --debug             Show debug messages.
+  -D, --detailed          Show detailed logging messages.
   -v, --version           Show version and exit.
   -h, --help              Show this message and exit.)HELP";
 

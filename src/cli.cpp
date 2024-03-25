@@ -125,6 +125,16 @@ namespace cli {
 				log::warn("Duplicate use of -p/--primes");
 			show_primes = true;
 
+		} else if (opt == "--debug") {
+			if (debug_mode)
+				log::warn("Duplicate use of -d/--debug");
+			debug_mode = true;
+
+		} else if (opt == "--detailed") {
+			if (detailed_mode)
+				log::warn("Duplicate use of -D/--detailed");
+			detailed_mode = true;
+
 		} else {
 			throw argument_error("Unrecognized option: " + opt);
 		}
@@ -175,6 +185,16 @@ namespace cli {
 			if (show_primes)
 				log::warn("Duplicate use of -p/--primes");
 			show_primes = true;
+
+		} else if (opt == "-d") {
+			if (debug_mode)
+				log::warn("Duplicate use of -d/--debug");
+			debug_mode = true;
+
+		} else if (opt == "-D") {
+			if (detailed_mode)
+				log::warn("Duplicate use of -D/--detailed");
+			detailed_mode = true;
 
 		} else {
 			throw argument_error("Unrecognized option: " + opt);

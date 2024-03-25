@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: GPLv3
 
 CXX      := clang++
-CXXFLAGS := -Ofast -std=c++20 -I src
+CXXFLAGS := -O2 -std=c++20 -I src
 
 EXE      := bin/mps
-MODULES  := ansi log cli io mp math
+MODULES  := ansi cli io mp math
 
 SOURCES  := $(addsuffix .cpp,$(addprefix src/,$(MODULES)))
 OBJECTS  := $(subst src/,lib/,$(SOURCES:.cpp=.o))
