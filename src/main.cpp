@@ -35,7 +35,7 @@ int main(const int argc, const char **argv) {
 
 	} catch (cli::show_info const& error) {
 		std::cout << error.what() << std::endl;
-		return ERR_USAGE;
+		return OK;
 
 	} catch (cli::argument_error const& error) {
 		log::critical(error.what());
