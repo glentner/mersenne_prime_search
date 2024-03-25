@@ -21,15 +21,14 @@ int main(const int argc, const char **argv) {
 	log::init();
 
 	try {
+
 		auto opt = cli::parse_args(argc, argv);
 
-		if (opt.debug_mode) {
-			log::set_level(log::DEBUG);
-		}
-
-		if (opt.detailed_mode) {
+		if (opt.detailed_mode)
 			log::set_style(log::DETAILED);
-		}
+
+		if (opt.debug_mode)
+			log::set_level(log::DEBUG);
 
 		auto num = BigInt();
 		num.load(opt.pval);
