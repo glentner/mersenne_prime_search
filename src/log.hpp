@@ -157,7 +157,7 @@ namespace log {
 		print(
 			std::cerr,
 			bold(color_by_level[level](name)),
-			faint(" ["), faint(APP_NAME), faint("] "),
+			faint(" [" + APP_NAME + "] "),
 			std::forward<Args>(args)...);
 	}
 
@@ -176,7 +176,7 @@ namespace log {
 			faint(hostname), " ",
 			faint(task_id_part),
 			bold(color_by_level[level](name)),
-			faint(" ["), faint(APP_NAME), faint("] "),
+			faint(" [" + APP_NAME + "] "),
 			std::forward<Args>(args)...);
 	}
 
