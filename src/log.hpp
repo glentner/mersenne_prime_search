@@ -105,21 +105,13 @@ namespace log {
 	}
 
 
-	inline void set_style(const std::string &name) {
-		if (style_by_name.find(name) != style_by_name.end()) {
-			style = style_by_name[name];
-		} else {
-			throw std::runtime_error("Unrecognized log::style, \"" + name + "\"");
-		}
+	inline void set_style(Style _style) {
+		style = _style;
 	}
 
 
-	inline void set_level(const std::string &name) {
-		if (level_by_name.find(name) != level_by_name.end()) {
-			level = level_by_name[name];
-		} else {
-			throw std::runtime_error("Unrecognized log::level, \"" + name + "\"");
-		}
+	inline void set_level(Level _level) {
+		level = _level;
 	}
 
 
@@ -134,8 +126,8 @@ namespace log {
 		init_tty();
 		set_hostname();
 		set_task_id();
-		set_level("info");
-		set_style("default");
+		set_level(INFO);
+		set_style(DEFAULT);
 	}
 
 

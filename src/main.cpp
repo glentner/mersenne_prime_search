@@ -23,11 +23,11 @@ int main(const int argc, const char **argv) {
 		auto opt = cli::parse_args(argc, argv);
 
 		if (opt.debug_mode) {
-			log::set_level("debug");
+			log::set_level(log::DEBUG);
 		}
 
 		if (opt.detailed_mode) {
-			log::set_style("detailed");
+			log::set_style(log::DETAILED);
 		}
 
 		auto num = BigInt();
