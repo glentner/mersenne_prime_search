@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPLv3
 
 CXX      := clang++
-CXXFLAGS := -O2 -std=c++20 -I src
+CXXFLAGS := -Ofast -std=c++20 -I src
 
 EXE      := bin/mps
 MODULES  := ansi cli io mp math
