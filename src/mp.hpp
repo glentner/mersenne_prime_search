@@ -7,13 +7,13 @@
 // The `BigInt` implements large integer methods.
 //
 
+#pragma once
+
+
 // Standard libs
 #include <iostream>
 #include <string>
 #include <vector>
-
-#ifndef _MPS_MP_
-#define _MPS_MP_
 
 class BigInt {
 private:
@@ -28,7 +28,4 @@ public:
 	size_t size();
 	friend std::ostream& operator<<(std::ostream& s, const BigInt& m);
 };
-
-
-#endif
 

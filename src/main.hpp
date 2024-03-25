@@ -4,13 +4,11 @@
 // Metadata and usage text
 //
 
+#pragma once
+
 
 // Standard libs
 #include <string>
-
-
-#ifndef _MPS_MAIN_
-#define _MPS_MAIN_
 
 
 static const std::string APP_NAME = "mps";
@@ -48,7 +46,4 @@ Options:
   -D, --detailed          Show detailed logging messages.
   -v, --version           Show version and exit.
   -h, --help              Show this message and exit.)HELP";
-
-
-#endif
 
