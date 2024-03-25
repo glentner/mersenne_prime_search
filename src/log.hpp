@@ -4,6 +4,9 @@
 // Logging
 //
 
+#pragma once
+
+
 // Standard libs
 #include <iostream>
 #include <string>
@@ -20,49 +23,28 @@
 #include "ansi.hpp"
 
 
-#ifndef _MPS_LOG_
-#define _MPS_LOG_
-
-
 namespace log {
 
+
+	inline void print(std::ostream& s){
+		s << std::endl;
+	}
+
+
+	template<typename Arg0, typename... Args>
+	inline void print(std::ostream& s, Arg0&& arg0, Args&&... args) {
+		s << arg0;
+		print(s, std::forward<Args>(args)...);
+	}
+
+
 	enum Style {
-		LOG_DEFAULT,
-		LOG_DETAILED,
+		DEFAULT,
+		DETAILED,
 	};
 
-	static std::map<std::string, Style>
-	style_by_name {
-		{"default",   LOG_DEFAULT},
-		{"detailed",  LOG_DETAILED},
-	};
 
-	static std::string hostname = "";
-	static std::string task_id = "";
-
-	inline void set_hostname() {
-		char h[1024];
-		gethostname(h, 1024);
-		hostname = h;
-	}
-
-	inline void set_task_id() {
-		if (const char* _task_id = std::getenv("TASK_ID")) {
-			task_id = _task_id;
-		}
-	}
-
-	static Style style = LOG_DEFAULT;
-
-	inline void set_style(const std::string& str) {
-		if (style_by_name.find(str) != style_by_name.end()) {
-			style = style_by_name[str];
-		} else {
-			throw std::runtime_error("Invalid log::style '" + str + "'");
-		}
-	}
-
-	enum Level : uint8_t {
+	enum Level {
 		DEBUG,
 		INFO,
 		WARNING,
@@ -70,7 +52,14 @@ namespace log {
 		CRITICAL
 	};
 
-	static Level level = WARNING;
+
+	static std::map<std::string, Style>
+	style_by_name {
+		{"default",   DEFAULT},
+		{"detailed",  DETAILED},
+	};
+
+
 	static std::map<std::string, Level>
 	level_by_name {
 		{"debug",    DEBUG},
@@ -80,13 +69,6 @@ namespace log {
 		{"critical", CRITICAL},
 	};
 
-	inline void set_level(const std::string& str) {
-		if (level_by_name.find(str) != level_by_name.end()) {
-			level = level_by_name[str];
-		} else {
-			throw std::runtime_error("Invalid log::level '" + str + "'");
-		}
-	}
 
 	static std::map<Level, std::string>
 	name_by_level {
@@ -97,6 +79,7 @@ namespace log {
 		{CRITICAL, "critical"},
 	};
 
+
 	static std::map<Level, std::function<std::string(std::string)>>
 	color_by_level {
 		{DEBUG,    blue},
@@ -106,56 +89,88 @@ namespace log {
 		{CRITICAL, magenta}
 	};
 
-	// NOTE: Chould be called once by main()
+
+	static Style style;
+	static Level level;
+
+	static std::string hostname;
+	static std::string task_id;
+	static std::string name;
+
+
+	inline void set_hostname() {
+		char h[1024];
+		gethostname(h, 1024);
+		hostname = h;
+	}
+
+
+	inline void set_style(const std::string &name) {
+		if (style_by_name.find(name) != style_by_name.end()) {
+			style = style_by_name[name];
+		} else {
+			throw std::runtime_error("Unrecognized log::style, \"" + name + "\"");
+		}
+	}
+
+
+	inline void set_level(const std::string &name) {
+		if (level_by_name.find(name) != level_by_name.end()) {
+			level = level_by_name[name];
+		} else {
+			throw std::runtime_error("Unrecognized log::level, \"" + name + "\"");
+		}
+	}
+
+
+	inline void set_task_id() {
+		if (const char* _task_id = std::getenv("TASK_ID")) {
+			task_id = _task_id;
+		}
+	}
+
+
 	inline void init() {
 		init_tty();
 		set_hostname();
 		set_task_id();
 	}
 
-	inline std::string get_timestamp() {
+
+	inline std::string timestamp() {
 		std::time_t time = std::time(nullptr);
 		char time_chars[100];
 		std::strftime(time_chars,
-				      sizeof(time_chars),
+					  sizeof(time_chars),
 					  "%Y-%m-%d %H:%M:%S",
 					  std::localtime(&time));
 		return time_chars;
 	}
 
-	inline void __print(std::ostream& s){
-		s << std::endl;
-		s << std::flush;
-	}
-
-	template<typename Arg0, typename... Args>
-	inline void __print(std::ostream& s, Arg0&& arg0, Args&&... args) {
-		s << arg0;
-		__print(s, std::forward<Args>(args)...);
-	}
 
 	template <typename... Args>
-	inline void print_default(Level level, Args&&... args) {
+	inline void log_default(Level level, Args&&... args) {
 		std::string name = name_by_level[level];
 		name.insert(name.begin(), 8 - name.size(), ' ');
-		__print(
+		print(
 			std::cerr,
 			bold(color_by_level[level](name)),
 			faint(" ["), faint(APP_NAME), faint("] "),
 			std::forward<Args>(args)...);
 	}
 
+
 	template <typename... Args>
-	inline void print_detailed(Level level, Args&&... args) {
+	inline void log_detailed(Level level, Args&&... args) {
 		std::string name = name_by_level[level];
 		name.insert(name.begin(), 8 - name.size(), ' ');
 		std::string task_id_part = "";
 		if (not task_id.empty() ) {
 			task_id_part = "[" + task_id + "] ";
 		}
-		__print(
+		print(
 			std::cerr,
-			faint(get_timestamp()), " ",
+			faint(timestamp()), " ",
 			faint(hostname), " ",
 			faint(task_id_part),
 			bold(color_by_level[level](name)),
@@ -163,16 +178,17 @@ namespace log {
 			std::forward<Args>(args)...);
 	}
 
+
 	template <typename... Args>
-	inline void print(Level level, Args&&... args) {
-		if (::log::level > level)
+	inline void log(Level _level, Args&&... args) {
+		if (level > _level)
 			return;
 		switch (style) {
-			case LOG_DEFAULT:
-				print_default(level, std::forward<Args>(args)...);
+			case DEFAULT:
+				log_default(_level, std::forward<Args>(args)...);
 				break;
-			case LOG_DETAILED:
-				print_detailed(level, std::forward<Args>(args)...);
+			case DETAILED:
+				log_detailed(_level, std::forward<Args>(args)...);
 				break;
 		}
 	}
@@ -180,39 +196,44 @@ namespace log {
 
 	template <typename... Args>
 	inline void debug(Args&&... args) {
-		print(DEBUG, std::forward<Args>(args)...);
+		log(DEBUG, std::forward<Args>(args)...);
 	}
+
 
 	template <typename... Args>
 	inline void info(Args&&... args) {
-		print(INFO, std::forward<Args>(args)...);
+		log(INFO, std::forward<Args>(args)...);
 	}
+
 
 	template <typename... Args>
 	inline void warn(Args&&... args) {
-		print(WARNING, std::forward<Args>(args)...);
+		log(WARNING, std::forward<Args>(args)...);
 	}
+
 
 	template <typename... Args>
 	inline void warning(Args&&... args) {
-		print(WARNING, std::forward<Args>(args)...);
+		log(WARNING, std::forward<Args>(args)...);
 	}
+
 
 	template <typename... Args>
 	inline void err(Args&&... args) {
-		print(ERROR, std::forward<Args>(args)...);
+		log(ERROR, std::forward<Args>(args)...);
 	}
+
 
 	template <typename... Args>
 	inline void error(Args&&... args) {
-		print(ERROR, std::forward<Args>(args)...);
+		log(ERROR, std::forward<Args>(args)...);
 	}
+
 
 	template <typename... Args>
 	inline void critical(Args&&... args) {
-		print(CRITICAL, std::forward<Args>(args)...);
+		log(CRITICAL, std::forward<Args>(args)...);
 	}
-}
 
-#endif
+}
 
