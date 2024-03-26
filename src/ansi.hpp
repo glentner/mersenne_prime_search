@@ -57,17 +57,20 @@ ansi_by_id {
 };
 
 
-std::string format_ansi(Ansi ansi, const std::string& str);
-std::string bold(const std::string& str);
-std::string faint(const std::string& str);
-std::string italic(const std::string& str);
-std::string underline(const std::string& str);
-std::string black(const std::string& str);
-std::string red(const std::string& str);
-std::string green(const std::string& str);
-std::string yellow(const std::string& str);
-std::string blue(const std::string& str);
-std::string magenta(const std::string& str);
-std::string cyan(const std::string& str);
-std::string white(const std::string& str);
+std::string format_ansi(Ansi ansi, const std::string& text);
+std::string bold(const std::string& text);
+std::string faint(const std::string& text);
+std::string italic(const std::string& text);
+std::string underline(const std::string& text);
+std::string black(const std::string& text);
+std::string red(const std::string& text);
+std::string green(const std::string& text);
+std::string yellow(const std::string& text);
+std::string blue(const std::string& text);
+std::string magenta(const std::string& text);
+std::string cyan(const std::string& text);
+std::string white(const std::string& text);
+
+
+std::string colorize_usage(const std::string& text);
 

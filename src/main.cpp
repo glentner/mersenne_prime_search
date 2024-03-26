@@ -6,10 +6,10 @@
 #include <iostream>
 #include <string>
 #include <exception>
-#include <regex>
 
 // Internal libs
 #include "main.hpp"
+#include "ansi.hpp"
 #include "log.hpp"
 #include "cli.hpp"
 #include "math.hpp"
@@ -41,7 +41,7 @@ int main(const int argc, const char **argv) {
 		log::info("Starting test: ", num);
 
 	} catch (cli::show_info const& error) {
-		std::cout << error.what() << std::endl;
+		std::cout << colorize_usage(error.what()) << std::endl;
 		return OK;
 
 	} catch (cli::argument_error const& error) {

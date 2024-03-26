@@ -7,6 +7,7 @@
 
 // Standard libs
 #include <map>
+#include <regex>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -45,8 +46,8 @@ void init_tty() {
 }
 
 
-std::string format_ansi(Ansi ansi, const std::string& str) {
-	// Wrap `str` with given `ansi` escape sequence and RESET (if necessary).
+std::string format_ansi(Ansi ansi, const std::string& text) {
+	// Wrap `text` with given `ansi` escape sequence and RESET (if necessary).
 	//
 	// This method considers NO_COLOR or FORCE_COLOR to implicitly
 	// suppress applying ansi color escape sequences.
@@ -56,63 +57,84 @@ std::string format_ansi(Ansi ansi, const std::string& str) {
 	//       only <stderr> for now.
 
     if (NO_COLOR and not FORCE_COLOR) {
-        return str;
+        return text;
 	}
 	if (not STDERR_COLOR) {
-		return str;
+		return text;
 	}
-	if (str.ends_with(ansi_by_id[RESET])) {
-		return ansi_by_id[ansi] + str;
+	if (text.ends_with(ansi_by_id[RESET])) {
+		return ansi_by_id[ansi] + text;
 	}
-	return ansi_by_id[ansi] + str + ansi_by_id[RESET];
+	return ansi_by_id[ansi] + text + ansi_by_id[RESET];
 }
 
 
-std::string bold(const std::string& str) {
-	return format_ansi(BOLD, str);
+std::string bold(const std::string& text) {
+	return format_ansi(BOLD, text);
 }
 
-std::string faint(const std::string& str) {
-	return format_ansi(FAINT, str);
+std::string faint(const std::string& text) {
+	return format_ansi(FAINT, text);
 }
 
-std::string italic(const std::string& str) {
-	return format_ansi(ITALIC, str);
+std::string italic(const std::string& text) {
+	return format_ansi(ITALIC, text);
 }
 
-std::string underline(const std::string& str) {
-	return format_ansi(UNDERLINE, str);
+std::string underline(const std::string& text) {
+	return format_ansi(UNDERLINE, text);
 }
 
-std::string black(const std::string& str) {
-	return format_ansi(BLACK, str);
+std::string black(const std::string& text) {
+	return format_ansi(BLACK, text);
 }
 
-std::string red(const std::string& str) {
-	return format_ansi(RED, str);
+std::string red(const std::string& text) {
+	return format_ansi(RED, text);
 }
 
-std::string green(const std::string& str) {
-	return format_ansi(GREEN, str);
+std::string green(const std::string& text) {
+	return format_ansi(GREEN, text);
 }
 
-std::string yellow(const std::string& str) {
-	return format_ansi(YELLOW, str);
+std::string yellow(const std::string& text) {
+	return format_ansi(YELLOW, text);
 }
 
-std::string blue(const std::string& str) {
-	return format_ansi(BLUE, str);
+std::string blue(const std::string& text) {
+	return format_ansi(BLUE, text);
 }
 
-std::string magenta(const std::string& str) {
-	return format_ansi(MAGENTA, str);
+std::string magenta(const std::string& text) {
+	return format_ansi(MAGENTA, text);
 }
 
-std::string cyan(const std::string& str) {
-	return format_ansi(CYAN, str);
+std::string cyan(const std::string& text) {
+	return format_ansi(CYAN, text);
 }
 
-std::string white(const std::string& str) {
-	return format_ansi(WHITE, str);
+std::string white(const std::string& text) {
+	return format_ansi(WHITE, text);
+}
+
+
+
+std::string colorize_usage(const std::string& text) {
+
+	std::string output = text;
+
+	std::regex header_re("^[A-Za-z]+:", std::regex::multiline);
+	output = std::regex_replace(output, header_re, bold("$&"));
+
+	std::regex metavar_re("(PVAL|NAME|PATH)", std::regex::multiline);
+	output = std::regex_replace(output, metavar_re, italic("$&"));
+
+	std::regex option_re("(-[a-zA-Z]+|--[a-z]+(-[a-z]+)?)", std::regex::multiline);
+	output = std::regex_replace(output, option_re, cyan("$&"));
+
+	std::regex quoted_re("'(.*?)'", std::regex::multiline);
+	output = std::regex_replace(output, quoted_re, yellow("$&"));
+
+	return output;
 }
 
