@@ -38,7 +38,23 @@ int main(const int argc, const char **argv) {
 			return OK;
 		}
 
-		log::info("Starting test: ", num);
+		switch (opt.test_case) {
+
+			case cli::TEST_FACTOR:
+				test_quick_factor(num);
+				break;
+
+			case cli::TEST_P_MINUS_ONE:
+				test_p_minus_one(num);
+				break;
+
+			case cli::TEST_LUCAS_LEHMER:
+				test_lucas_lehmer(num);
+				break;
+
+			default:
+				test_all(num);
+		}
 
 	} catch (cli::show_info const& error) {
 		std::cout << colorize_usage(error.what()) << std::endl;

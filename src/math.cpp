@@ -12,6 +12,7 @@
 
 // Internal libs
 #include "math.hpp"
+#include "mp.hpp"
 #include "log.hpp"
 
 
@@ -48,4 +49,32 @@ void display_primes(size_t n) {
 			std::cout << i << std::endl;
 }
 
+
+bool test_quick_factor(BigInt p) {
+
+	log::info("Running quick factor test");
+	return true;
+}
+
+
+bool test_p_minus_one(BigInt p) {
+
+	log::info("Running P-1 test");
+	return true;
+}
+
+
+bool test_lucas_lehmer(BigInt p) {
+
+	log::info("Running Lucas-Lehmer test");
+	return true;
+}
+
+
+bool test_all(BigInt p) {
+
+	return test_quick_factor(p) and
+		   test_p_minus_one(p) and
+		   test_lucas_lehmer(p);
+}
 
