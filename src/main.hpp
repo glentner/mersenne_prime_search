@@ -32,16 +32,16 @@ static const std::string APP_USAGE = R"USAGE(Usage:
 
 static const std::string APP_HELP = R"HELP(Usage:
   mps [-hv] [-p] PVAL [-s] [-t NAME] [-f PATH] [-d] [-D]
-  Check if number is Mersenne prime.
+  Test if number is Mersenne prime.
 
 Arguments:
-  PVAL                    Mersenne prime p-value to check.
+  PVAL                    Mersenne prime parameter.
 
 Options:
   -p, --primes            Print primes up to PVAL.
   -s, --skip-ptest        Suppress initial prime test on PVAL.
   -t, --test        NAME  One of 'tf', 'p1', 'll' (default: 'all').
-  -f, --file        PATH  File path for check-pointing.
+  -f, --file        PATH  File path for checkpointing.
   -d, --debug             Show debug messages.
   -D, --detailed          Show detailed logging messages.
   -v, --version           Show version and exit.
