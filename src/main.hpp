@@ -35,7 +35,7 @@ static const std::string APP_HELP = R"HELP(Usage:
   Test if number is Mersenne prime.
 
 Arguments:
-  PVAL                    Mersenne prime parameter.
+  PVAL                    Mersenne prime exponent.
 
 Options:
   -p, --primes            Print primes up to PVAL.
