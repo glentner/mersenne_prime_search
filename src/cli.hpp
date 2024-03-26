@@ -54,7 +54,7 @@ namespace cli {
 		{"pm",           TEST_P_MINUS_ONE},
 		{"p-min",        TEST_P_MINUS_ONE},
 		{"ll",           TEST_LUCAS_LEHMER},
-		{"lucus-lehmer", TEST_LUCAS_LEHMER},
+		{"lucas-lehmer", TEST_LUCAS_LEHMER},
 	};
 
 	class Interface {
