@@ -57,7 +57,6 @@ namespace cli {
 		{"lucus-lehmer", TEST_LUCAS_LEHMER},
 	};
 
-
 	class Interface {
 	public:
 
@@ -70,7 +69,7 @@ namespace cli {
 		bool opt_test_case = false;
 		void set_test_case(const std::string& str);
 
-		std::string file_path = "NOPATH";
+		std::string file_path = "-";
 		bool opt_file_path = false;
 		void set_file_path(const std::string& str);
 

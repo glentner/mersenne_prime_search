@@ -7,6 +7,7 @@
 
 // Standard libs
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <map>
 
@@ -72,6 +73,10 @@ namespace cli {
 			throw argument_error("Unexpected positional argument: " + positional[1]);
 
 		pval = positional[0];
+
+		if (not opt_file_path) {
+			file_path = pval + ".mps";
+		}
 	}
 
 	void Interface::pop_opt() {
@@ -142,10 +147,10 @@ namespace cli {
 
 	void Interface::check_option_short() {
 
-		if (opt == "-h") {
+		if (opt == "-h" or starts_with(opt, "-h")) {
 			throw show_info(APP_HELP);
 
-		} else if (opt == "-v") {
+		} else if (opt == "-v" or starts_with(opt, "-v")) {
 			throw show_info(APP_NAME + " v" + APP_VERSION);
 
 		} else if (opt == "-t") {
@@ -155,6 +160,12 @@ namespace cli {
 				log::warn("Duplicate use of -t/--test");
 			set_test_case(remaining[0]);
 			pop_opt();
+
+		} else if (starts_with(opt, "-t")) {
+			if (opt_test_case)
+				log::warn("Duplicate use of -t/--test");
+			opt_value = strip_left(opt, "-t");
+			set_test_case(opt_value);
 
 		} else if (starts_with(opt, "-t=")) {
 			if (opt_test_case)
@@ -169,6 +180,12 @@ namespace cli {
 				log::warn("Duplicate use of -f/--file");
 			set_file_path(remaining[0]);
 			pop_opt();
+
+		} else if (starts_with(opt, "-f")) {
+			if (opt_file_path)
+				log::warn("Duplicate use of -f/--file");
+			opt_value = strip_left(opt, "-f");
+			set_file_path(opt_value);
 
 		} else if (starts_with(opt, "-f=")) {
 			if (opt_file_path)
@@ -213,12 +230,15 @@ namespace cli {
 
 	void Interface::set_file_path(const std::string& str) {
 		opt_file_path = true;
-		if (true) { // TODO: valid file paths?
-			file_path = str;
+		file_path = str;
+		std::ofstream file(file_path, std::ofstream::app);
+		if (file.fail()) {
+			throw argument_error("Could not open file: " + file_path);
 		} else {
-			throw argument_error("Bad file path: " + file_path);
+			file.close();
 		}
 	}
+
 }
 
 
