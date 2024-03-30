@@ -74,6 +74,10 @@ namespace cli {
 
 		pval = positional[0];
 
+		if (pval.size() > 9) {
+			throw argument_error("PVAL must be less than ~2^30 (9 digits)");
+		}
+
 		if (not opt_file_path) {
 			file_path = pval + ".mps";
 		}

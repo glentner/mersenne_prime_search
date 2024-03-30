@@ -30,30 +30,29 @@ int main(const int argc, const char **argv) {
 		if (opt.debug_mode)
 			log::set_level(log::DEBUG);
 
-		auto num = BigInt();
-		num.load(opt.pval);
-
 		if (opt.show_primes) {
 			display_primes(std::stoi(opt.pval));
 			return OK;
 		}
 
+		const long unsigned pval = std::stoi(opt.pval);
+
 		switch (opt.test_case) {
 
 			case cli::TEST_FACTOR:
-				test_quick_factor(num);
+				test_quick_factor(pval);
 				break;
 
 			case cli::TEST_P_MINUS_ONE:
-				test_p_minus_one(num);
+				test_p_minus_one(pval);
 				break;
 
 			case cli::TEST_LUCAS_LEHMER:
-				test_lucas_lehmer(num);
+				test_lucas_lehmer(pval);
 				break;
 
 			default:
-				test_all(num);
+				test_all(pval);
 		}
 
 	} catch (cli::show_info const& error) {

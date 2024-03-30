@@ -18,8 +18,8 @@ std::vector<bool> prime_sieve(size_t n);
 void display_primes(size_t n);
 
 
-bool test_quick_factor(BigInt p);
-bool test_p_minus_one(BigInt p);
-bool test_lucas_lehmer(BigInt p);
-bool test_all(BigInt p);
+bool test_quick_factor(const long unsigned p);
+bool test_p_minus_one(const long unsigned p);
+bool test_lucas_lehmer(const long unsigned p);
+bool test_all(const long unsigned p);
 
